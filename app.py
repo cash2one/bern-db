@@ -39,14 +39,14 @@ def get_quote(quote_id):
 def get_quote_random():
     return jsonify(make_public_quote(quote_random(quotes_db)))
 
-@app.route("/v0/quotes/<string:tag>", methods=["GET"])
+@app.route("/v0/quotes/tag/<string:tag>", methods=["GET"])
 def get_quotes_by_tag(tag):
     quotes = quotes_by_tag(tag)
     if len(quotes) == 0:
         abort(404)
     return jsonify({"quotes": [make_public_quote(quote) for quote in quotes]})
 
-@app.route("/v0/quotes/<string:tag>/random", methods=["GET"])
+@app.route("/v0/quotes/tag/<string:tag>/random", methods=["GET"])
 def get_quotes_by_tag_random(tag):
     quote = quote_random(quotes_by_tag(tag))
     if quote is None:
