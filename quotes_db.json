@@ -1,14 +1,16 @@
 [
     {
         "id": 0,
-        "content": "I have fought my entire life to make sure that healthcare is a right for all people.",
+        "text": "I have fought my entire life to make sure that healthcare is a right for all people.",
+        "author": "Bernie Sanders",
         "date": "2016/02/11",
         "source": "http://newshour-tc.pbs.org/newshour/wp-content/uploads/2016/02/PBS-NewsHour-Dem-Debate-%E2%80%93-FULL-Rush-Transcript.pdf",
         "tags": ["medicare"]
     },
     {
         "id": 1,
-        "content": "Today a male African-American baby born today stands a one-in-four chance of ending up in jail. That is beyond unspeakable. So what we have to do is the radical reform of a broken criminal justice system.",
+        "text": "Today a male African-American baby born today stands a one-in-four chance of ending up in jail. That is beyond unspeakable. So what we have to do is the radical reform of a broken criminal justice system.",
+        "author": "Bernie Sanders",
         "date": "2016/02/11",
         "source": "http://newshour-tc.pbs.org/newshour/wp-content/uploads/2016/02/PBS-NewsHour-Dem-Debate-%E2%80%93-FULL-Rush-Transcript.pdf",
         "tags": ["crime"]
