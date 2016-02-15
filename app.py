@@ -1,5 +1,5 @@
 import random, json
-from flask import Flask, jsonify, url_for, abort, make_response
+from flask import Flask, jsonify, url_for, abort
 
 app = Flask(__name__)
 
@@ -9,7 +9,7 @@ with open("quotes_db.json") as db:
 
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({"error": "Not Found"}), 404)
+    return jsonify({"error": "Not Found"}), 404
 
 def make_public_quote(quote):
     public_quote = quote.copy()
