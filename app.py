@@ -1,19 +1,22 @@
 import random
 import config
 from flask import Flask, jsonify, url_for, abort
-from peewee import SqliteDatabase
+from peewee import SqliteDatabase, fn
+from playhouse.flask_utils import get_object_or_404
 
 app = Flask(__name__)
 app.config.from_object("config")
 
 db = SqliteDatabase(app.config.get("DATABASE_NAME"))
 
+import models
+
 @app.before_request
 def _db_connect():
     db.connect()
 
 @app.teardown_request
-def _db_close():
+def _db_close(req):
     if not db.is_closed():
         db.close()
 
@@ -21,44 +24,46 @@ def _db_close():
 def not_found(error):
     return jsonify({"error": "Not Found"}), 404
 
-def make_public_quote(quote):
-    public_quote = quote.copy()
-    public_quote["uri"] = url_for("get_quote", quote_id=public_quote.get("id"), _external=True)
-    return public_quote
-
-def quote_random(quotes):
-    if len(quotes) == 0:
-        return None
-    return random.choice(quotes)
-
 def quotes_by_tag(tag):
     return [quote for quote in database.get("quotes") if tag in quote["tags"]]
 
 @app.route("/v0/quotes", methods=["GET"])
 def get_quotes():
-    return jsonify({"quotes": [make_public_quote(quote) for quote in database.get("quotes")]})
+    public_quotes = []
+    quotes = models.Quote.select()
+    for quote in quotes.iterator():
+        public_quotes.append(quote.make_public())
+
+    return jsonify({"quotes": public_quotes})
 
 @app.route("/v0/quotes/<int:quote_id>", methods=["GET"])
 def get_quote(quote_id):
-    quote = [quote for quote in database.get("quotes") if quote["id"] == quote_id]
-    if len(quote) == 0:
-        abort(404)
-    return jsonify(quote[0])
+    quotes = models.Quote.select()
+    quote = get_object_or_404(quotes, (models.Quote.id == quote_id))
+    public_quote = quote.make_public()
+
+    return jsonify(public_quote)
 
 @app.route("/v0/quotes/random", methods=["GET"])
 def get_quote_random():
-    return jsonify(make_public_quote(quote_random(database.get("quotes"))))
+    quote = models.Quote.select().order_by(fn.Random()).limit(1)[0]
+    public_quote = quote.make_public()
 
-@app.route("/v0/quotes/tag/<string:tag>", methods=["GET"])
-def get_quotes_by_tag(tag):
-    quotes = quotes_by_tag(tag)
-    if len(quotes) == 0:
-        abort(404)
-    return jsonify({"quotes": [make_public_quote(quote) for quote in quotes]})
+    return jsonify(public_quote)
 
-@app.route("/v0/quotes/tag/<string:tag>/random", methods=["GET"])
-def get_quotes_by_tag_random(tag):
-    quote = quote_random(quotes_by_tag(tag))
-    if quote is None:
-        abort(404)
-    return jsonify(make_public_quote(quote))
+@app.route("/v0/quotes/tag/<string:tag_slug>", methods=["GET"])
+def get_quotes_by_tag(tag_slug):
+    tag = get_object_or_404(models.Tag.select(), (models.Tag.name == tag_slug))
+    public_quotes = []
+    for quote in tag.quotes.iterator():
+        public_quotes.append(quote.make_public())
+
+    return jsonify({"quotes": public_quotes})
+
+@app.route("/v0/quotes/tag/<string:tag_slug>/random", methods=["GET"])
+def get_quotes_by_tag_random(tag_slug):
+    tag = get_object_or_404(models.Tag.select(), (models.Tag.name == tag_slug))
+    quote = tag.quotes.order_by(fn.Random(), models.Quote.id).limit(1).get()
+    public_quote = quote.make_public()
+
+    return jsonify(public_quote)
