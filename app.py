@@ -1,11 +1,21 @@
-import random, json
+import random
+import config
 from flask import Flask, jsonify, url_for, abort
+from peewee import SqliteDatabase
 
 app = Flask(__name__)
+app.config.from_object(config)
 
-database = {}
-with open("database.json") as db:
-    database = json.load(db)
+db = SqliteDatabase("database.sql")
+
+@app.before_request
+def _db_connect():
+    db.connect()
+
+@app.teardown_request
+def _db_close():
+    if not db.is_closed():
+        db.close()
 
 @app.errorhandler(404)
 def not_found(error):
@@ -52,6 +62,3 @@ def get_quotes_by_tag_random(tag):
     if quote is None:
         abort(404)
     return jsonify(make_public_quote(quote))
-
-if __name__ == "__main__":
-    app.run(debug=True)
