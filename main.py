@@ -1,6 +1,6 @@
 from app import app
-from models.quotes import Quote
+from models import create_tables
 
 if __name__ == "__main__":
-    Quote.create_table(True)
+    create_tables()
     app.run()

@@ -21,3 +21,7 @@ class Quote(BaseModel):
     tags = ManyToManyField(Tag, related_name="quotes")
 
 QuoteTag = Quote.tags.get_through_model()
+
+def create_tables():
+    models = [Tag, Quote, QuoteTag]
+    db.create_tables(models, True)

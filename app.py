@@ -4,9 +4,9 @@ from flask import Flask, jsonify, url_for, abort
 from peewee import SqliteDatabase
 
 app = Flask(__name__)
-app.config.from_object(config)
+app.config.from_object("config")
 
-db = SqliteDatabase("database.sql")
+db = SqliteDatabase(app.config.get("DATABASE_NAME"))
 
 @app.before_request
 def _db_connect():
