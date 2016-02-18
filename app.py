@@ -51,7 +51,7 @@ def get_quote_random():
 
     return jsonify(public_quote)
 
-@app.route("/v0/quotes/tag/<string:tag_slug>", methods=["GET"])
+@app.route("/v0/quotes/tags/<string:tag_slug>", methods=["GET"])
 def get_quotes_by_tag(tag_slug):
     tag = get_object_or_404(models.Tag.select(), (models.Tag.name == tag_slug))
     public_quotes = []
@@ -60,7 +60,7 @@ def get_quotes_by_tag(tag_slug):
 
     return jsonify({"quotes": public_quotes})
 
-@app.route("/v0/quotes/tag/<string:tag_slug>/random", methods=["GET"])
+@app.route("/v0/quotes/tags/<string:tag_slug>/random", methods=["GET"])
 def get_quotes_by_tag_random(tag_slug):
     tag = get_object_or_404(models.Tag.select(), (models.Tag.name == tag_slug))
     quote = tag.quotes.order_by(fn.Random(), models.Quote.id).limit(1).get()
