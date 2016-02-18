@@ -1,7 +1,7 @@
 import random
 import config
 from flask import Flask, jsonify, url_for, abort
-from peewee import SqliteDatabase, fn
+from peewee import SqliteDatabase, fn, JOIN_LEFT_OUTER
 from playhouse.flask_utils import get_object_or_404
 
 app = Flask(__name__)
@@ -50,6 +50,12 @@ def get_quote_random():
     public_quote = quote.make_public()
 
     return jsonify(public_quote)
+
+@app.route("/v0/quotes/tags", methods=["GET"])
+def get_quote_tags():
+    tags = models.Tag.select().join(models.QuoteTag).distinct()
+    public_tags = [tag.name for tag in tags.iterator()]
+    return jsonify({"tags": public_tags})
 
 @app.route("/v0/quotes/tags/<string:tag_slug>", methods=["GET"])
 def get_quotes_by_tag(tag_slug):
