@@ -1,40 +1,38 @@
-import peewee
 from flask import url_for
-from peewee import SqliteDatabase
-from playhouse.fields import ManyToManyField
-from playhouse.shortcuts import model_to_dict
+from flask_sqlalchemy import SQLAlchemy
 
 from app import db
+from schema import TagSchema, QuoteSchema
+tag_schema = TagSchema()
+quote_schema = QuoteSchema()
 
-class BaseModel(peewee.Model):
-    class Meta:
-        database = db
+quote_tags = db.Table("quote_tags", db.Model.metadata,
+        db.Column("tag_id", db.Integer, db.ForeignKey("tag.id")),
+        db.Column("quote_id", db.Integer, db.ForeignKey("quote.id")),
+)
 
-class Tag(BaseModel):
-    name = peewee.CharField(unique=True, primary_key=True)
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
 
-class Quote(BaseModel):
-    text = peewee.TextField(unique=True)
-    author = peewee.CharField()
-    date = peewee.DateField()
-    credit = peewee.CharField()
-    credit_url = peewee.TextField()
-    source_url = peewee.TextField()
-    tags = ManyToManyField(Tag, related_name="quotes")
+    def __str__(self):
+        return self.name
+
+class Quote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text)
+    author = db.Column(db.String)
+    date = db.Column(db.Date)
+    credit = db.Column(db.String)
+    credit_url = db.Column(db.Text)
+    source_url = db.Column(db.Text)
+    tags = db.relationship("Tag", secondary=quote_tags, backref="quotes")
 
     def make_public(self):
-        fields = [
-            Quote.text, Quote.author, Quote.credit, Quote.credit_url,
-            Quote.source_url, Quote.tags, Quote.date, Quote.id
-        ]
-        public_quote = model_to_dict(self, only=fields)
-        public_quote["date"] = public_quote.get("date").strftime("%Y/%m/%d")
+        public_quote = quote_schema.dump(self).data
         public_quote["uri"] = url_for("get_quote", quote_id=self.id, _external=True)
+
         return public_quote
 
-
-QuoteTag = Quote.tags.get_through_model()
-
-def create_tables():
-    models = [Tag, Quote, QuoteTag]
-    db.create_tables(models, True)
+    def __str__(self):
+        return self.text
