@@ -11,4 +11,3 @@ class QuoteSchema(Schema):
     credit = fields.String()
     credit_url = fields.String()
     source_url = fields.String()
-    tags = fields.Nested(TagSchema, many=True)

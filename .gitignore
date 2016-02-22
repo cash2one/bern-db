@@ -1,3 +1,5 @@
 __pycache__
 *.sql
 *.pyc
+config_local.py
+config_production.py
