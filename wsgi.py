@@ -5,4 +5,4 @@ try:
 except ImportError:
     config=None
 
-app = create_app(config=None)
+app = create_app(config=config)
