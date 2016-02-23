@@ -11267,7 +11267,7 @@ body:after {
     -webkit-background-size: 100%,600%;
     -moz-background-size: 100%,600%;
     background-size: 100%,600%;
-    min-height: 50vw;
+    min-height: 32vw;
 }
 
 .quote-section:after,.quote-section:before {

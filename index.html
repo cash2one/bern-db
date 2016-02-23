@@ -43,11 +43,18 @@
     <!-- /INTRODUCTION FLIER -->
 
     <!-- BERN QUOTE -->
+    <script type="text/javascript">
+    $(function() {
+        $.getJSON("https://api.bern-db.com/v0/quotes/random", function(quote) {
+            $("#quote").text(quote.text);
+        });
+    });
+    </script>
     <div class="quote-section">
         <section>
             <div class="issue-quote">
                 <div class="issue-quote--content">
-                    <quote></quote>
+                    <span id="quote"></span>
                     <div class="issue-quote--footer">
                         <h1>— Senator Bernie Sanders</h1>
                     </div>
