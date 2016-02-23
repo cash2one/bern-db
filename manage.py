@@ -7,7 +7,12 @@ from bern_db.extensions import db
 from bern_db.users.models import User, Role
 from bern_db.api.models import Quote, Tag
 
-app = create_app()
+try:
+    import config_local as config
+except ImportError:
+    config = None
+
+app = create_app(config=config)
 manager = Manager(app)
 
 @manager.command

@@ -8,12 +8,12 @@ DEFAULT_BLUEPRINTS = [
     v0,
 ]
 
-def create_app(blueprints=None):
+def create_app(config=None, blueprints=None):
     if blueprints is None:
         blueprints = DEFAULT_BLUEPRINTS
 
     app = Flask(__name__)
-    configure_app(app)
+    configure_app(app, config)
     configure_hooks(app)
     configure_blueprints(app, blueprints)
     configure_extensions(app)
@@ -21,8 +21,11 @@ def create_app(blueprints=None):
 
     return app
 
-def configure_app(app):
+def configure_app(app, config):
     app.config.from_object("bern_db.config")
+
+    if config:
+        app.config.from_object(config)
 
 def configure_hooks(app):
     pass

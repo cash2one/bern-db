@@ -27,13 +27,3 @@ SECURITY_POST_LOGOUT_VIEW = "/admin/"
 SECURITY_POST_REGISTER_VIEW = "/admin/"
 SECURITY_SEND_REGISTER_EMAIL = False
 SECURITY_REGISTERABLE = False
-
-try:
-    from .config_local import *
-except ImportError:
-    pass
-
-try:
-    from .config_production import *
-except ImportError:
-    pass
