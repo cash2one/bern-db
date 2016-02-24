@@ -11,32 +11,120 @@ section {
   padding: 4rem 0;
 }
 
-@media (min-width: 550px) {
-    .container {
-        max-width: 800px;
-    }
+blockquote {
+  position: relative;
+  font-size: 2rem;
+  color: #444;
+}
 
-    .header-section {
-        color: #fff;
-        background: #0076d7;
-        padding: 18rem 0;
-    }
+blockquote:before {
+  content: "\201C";
 
-    .header {
-        text-align: center;
-    }
+  font-size: 5rem;
+  color: #666;
 
-    .content-section h1 {
-      color: #F55B5B;
-      font-size: 3rem;
-      padding: 0.5rem 0 0;
-      margin: 0;
-    }
+  position: absolute;
+  top: -20px;
+  left: -20px;
+}
 
-    .content-section h2 {
-      color: #0076d7;
-      font-size: 4.5rem;
-      padding: 0;
-      margin: 0;
-    }
+blockquote:after {
+  content: "\201D";
+
+  font-size: 5rem;
+  color: #666;
+  position: absolute;
+  line-height: 5rem;
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid #c0cedc;
+  padding: 0;
+  margin: 0;
+}
+
+code {
+  word-wrap: break-word;
+}
+
+footer {
+  color: #fff;
+  background: #0076D7;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.button {
+  background: #f55b5b;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+.button:hover {
+  background: #EC3E3E;
+  color: #fff;
+}
+
+.container {
+    max-width: 800px;
+}
+
+.header-section {
+    color: #fff;
+    background: #0076d7;
+    padding: 18rem 0;
+}
+
+.header {
+    text-align: center;
+}
+
+.introduction-section {
+
+  background: #edf0f7;
+}
+
+.content-section h1 {
+  color: #F55B5B;
+  font-size: 2.5rem;
+  padding: 0.5rem 0 0;
+  margin: 0;
+}
+
+.content-section h2 {
+  color: #0076d7;
+  font-size: 3.5rem;
+  padding: 0;
+  margin: 0;
+}
+
+.content-section h3 {
+  color: #0076d7;
+  font-size: 2.3rem;
+  padding: 0;
+  margin: 0;
+}
+
+.content-section h4 {
+  color: #F55B5B;
+  font-size: 2.3rem;
+  padding: 0;
+  margin: 0;
+}
+
+.made-by {
+  border: 1px solid #FFF;
+  color: #fff;
+  padding: 1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.made-by:hover {
+  color: #ddd;
+  border-color: #ddd;
 }

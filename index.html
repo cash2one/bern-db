@@ -22,11 +22,13 @@
   
   <body class="">
 
-    <div class="-section">
+    <div class="header-section">
       <div class="container">
         <section class="header">
           <h1><strong>Bern DB</strong></h1>
           <h2>The Bernie Sanders Database</h2>
+          <a class="button" href="#api">Documentation</a>
+          <a class="button" href="https://github.com/ylambda/bern-db">Github</a>
         </section>
       </div>
     </div>
@@ -37,9 +39,11 @@
           $("#intro-quote").text(text);
         };
         var promise = $.getJSON("https://api.bern-db.com/v0/quotes/random");
+
         promise.done(function(quote) {
           renderQuote(quote.text);
         });
+
         promise.fail(function() {
           renderQuote("I believe in government, but I believe in efficient government, not wasteful government.")
         });
@@ -52,29 +56,140 @@
           <h2>What is Bern DB?</h2>
 
           <p>
-            Bern DB is a RESTful API for Bernie Sanders.
+            Bern DB is an API with quotes from Bernie Sanders.
           </p>
 
           <blockquote id="intro-quote">
           </blockquote>
 
-          <h4>Rate-Limit</h4>
-          <p>
-            Currently the API is limited to 100 requests per minute and maximum of 1000 requests per day.
-          </p>
-
         </section>
 
+        <hr>
+
         <section class="api content-section">
-          <h1>API</h1>
-          <h2>Documentation</h2>
+          <h1 id="api">API</h1>
+          <h2>General</h2>
+          <p>
+            The API is subject to change. If any change breaks the url structure and new version will be created. The current version is <code>v0</code>. All endpoints share this structure:<br>
+            <code>https://api.bern-db.com/v0/</code>
+          </p>
+          <h4>Rate Limiting</h4>
+          <p>
+            A maximum of 100 requests per minute and 1000 requests per day are allowed.
+          </p>
+          <p>
+            The response headers indicate your current rate limit status.
+          </p>
+<pre><code>HTTP/1.1 200 OK
+Server: nginx/1.4.6 (Ubuntu)
+Date: Wed, 24 Feb 2016 16:51:46 GMT
+Content-Type: application/json
+Content-Length: 458
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 97
+X-RateLimit-Reset: 1456332739
+X-UA-Compatible: IE=Edge</code></pre>
+          <h2>Quotes</h2>
 
           <p>
-            Bern DB is a RESTful API for Bernie Sanders. Currently the database contains quotes from Bernie's speeches. A simple set of tags describe the quotes.
+            Quotes are represented as an object with the following structure.
+            <pre><code>{
+  "author": "Bernie Sanders", 
+  "credit": "PBS NewsHour", 
+  "credit_url": "http://www.pbs.org/newshour", 
+  "date": "2016-02-11", 
+  "id": 2, 
+  "source_url": "http://newshour-tc.pbs.org/newshour/wp-content/uploads/2016/02/PBS-NewsHour-Dem-Debate-%E2%80%93-FULL-Rush-Transcript.pdf", 
+  "tags": [
+    "government"
+  ], 
+  "text": "I believe in government, but I believe in efficient government, not wasteful government.", 
+  "uri": "http://api.bern-db.com/v0/quotes/2"
+}</code></pre>
+          </p>
+
+          <h4>Quote List</h4>
+          <p>
+            Returns a list of quotes.
+          </p>
+          <p>
+            <strong>Endpoint</strong><br>
+            <code>https://api.bern-db.com/v0/quotes</code>
+          </p>
+          <p>
+            <a class="button" href="https://api.bern-db.com/v0/quotes">Example Quote List</a>
+          </p>
+
+          <h4>Quote</h4>
+          <p>
+            Returns a specific quotes by it's id.
+          </p>
+          <p>
+            <strong>Endpoint</strong><br>
+            <code>https://api.bern-db.com/v0/quotes/&lt;int:quote_id&gt;</code>
+          </p>
+          <p>
+            <a class="button" href="https://api.bern-db.com/v0/quotes/2">Example Quote</a>
+          </p>
+
+          <h4>Random Quote</h4>
+          <p>
+            Returns a random quote.
+          </p>
+          <p>
+            <strong>Endpoint</strong><br>
+            <code>https://api.bern-db.com/v0/quotes/&lt;int:quote_id&gt;</code>
+          </p>
+          <p>
+            <a class="button" href="https://api.bern-db.com/v0/quotes/random">Example Random Quote</a>
+          </p>
+
+          <h4>Tag List</h4>
+          <p>
+            Returns a list of tags used to describe quotes.
+          </p>
+          <p>
+            <strong>Endpoint</strong><br>
+            <code>https://api.bern-db.com/v0/tags</code>
+          </p>
+          <p>
+            <a class="button" href="https://api.bern-db.com/v0/quotes/tags">Example Tag List</a>
+          </p>
+
+          <h4>Quote List by Tag</h4>
+          <p>
+            Returns a list of quotes filtered by a tag.
+          </p>
+          <p>
+            <strong>Endpoint</strong><br>
+            <code>https://api.bern-db.com/v0/tags/&lt;string:tag_name&gt;</code>
+          </p>
+          <p>
+            <a class="button" href="https://api.bern-db.com/v0/quotes/tags/education">Example Quote</a>
+          </p>
+
+          <h4>Random Quote by Tag</h4>
+          <p>
+            Returns a random quotes filtered by a tag.
+          </p>
+          <p>
+            <strong>Endpoint</strong><br>
+            <code>https://api.bern-db.com/v0/tags/&lt;string:tag_name&gt;/random</code>
+          </p>
+          <p>
+            <a class="button" href="https://api.bern-db.com/v0/quotes/tags/education/random">Example Random Quote</a>
           </p>
         </section>
       </div>
     </div>
+
+    <footer>
+      <div class="footer-content">
+        <a class="made-by" href="https://github.com/ylambda">Made by ylambda</a>
+      </div>
+    </footer>
 
   </body>
 
