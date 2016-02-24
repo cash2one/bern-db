@@ -392,7 +392,6 @@ html {
 }
 
 body {
-    max-width: 1600px;
     margin: 0 auto;
 }
 
@@ -520,6 +519,10 @@ a:hover,a:link:hover,a:visited:hover {
 article,section {
     margin: 0 auto;
     padding: 2.5rem 1rem 6rem;
+}
+
+section {
+    max-width: 1200px;
 }
 
 article p:first-of-type,section p:first-of-type {
